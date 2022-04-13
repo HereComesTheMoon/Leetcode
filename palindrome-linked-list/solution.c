@@ -3,8 +3,6 @@
 #include <stdlib.h>
 
 bool isPalindrome(struct ListNode* head);
-void printList(struct ListNode* head);
-struct ListNode* buildList(int* arr, size_t len);
 
 bool isPalindrome(struct ListNode* head){
     // Idea: 1. Find middle of linked list.
@@ -54,35 +52,4 @@ bool isPalindrome(struct ListNode* head){
     }
     if (m->val != n->val) return false;
     return true;
-}
-
-struct ListNode* buildList(int* arr, size_t len) {
-    if (len == 0) return NULL;
-
-    struct ListNode* head = malloc(sizeof(struct ListNode));
-    head->val = arr[0];
-    struct ListNode* prev = head;
-
-    for (size_t k = 1; k < len; ++k) {
-        struct ListNode* node = malloc(sizeof(struct ListNode));
-        node->val = arr[k];
-        prev->next = node;
-        prev = node;
-    }
-    prev->next = NULL; // Don't forget this. You know what you did.
-    return head;
-}
-
-void printList(struct ListNode* head) {
-    struct ListNode* node = head;
-    while(node != NULL) {
-        printf("(%14p)->", node);
-        node = node->next;
-    }
-    printf("%14p\n", node);
-    while(head != NULL) {
-        printf("(%14d)->", head->val);
-        head = head->next;
-    }
-    printf("\n");
 }
