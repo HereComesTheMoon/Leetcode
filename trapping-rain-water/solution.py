@@ -1,29 +1,20 @@
 class Solution:
     def trap(self, heights: list[int]) -> int:
-        maxi = int(max(range(len(heights)), key=heights.__getitem__))
-        peak, nxt = 0, 1
-        rocks = 0
+        front, back = 0, len(heights) - 1
+        front_peak, back_peak = heights[front], heights[back]
         total = 0
-
-        while nxt <= maxi:
-            if heights[nxt] < heights[peak]:
-                rocks += heights[nxt]
+        while front < back:
+            if heights[front] <= heights[back]:
+                if heights[front] < front_peak:
+                    total += front_peak - heights[front]
+                else:
+                    front_peak = heights[front]
+                front += 1
             else:
-                total += (nxt - peak - 1) * heights[peak] - rocks
-                rocks = 0
-                peak = nxt
-            nxt += 1
+                if heights[back] < back_peak:
+                    total += back_peak - heights[back]
+                else:
+                    back_peak = heights[back]
+                back -= 1
 
-        peak, nxt = len(heights) - 1, len(heights) - 2
-        rocks = 0
-
-        while maxi <= nxt:
-            if heights[nxt] < heights[peak]:
-                rocks += heights[nxt]
-            else:
-                total += (peak - nxt - 1) * heights[peak] - rocks
-                rocks = 0
-                peak = nxt
-            nxt -= 1
         return total
-
