@@ -1,22 +1,29 @@
-import heapq
-
 class Solution:
-    def trap(self, height_list: list[int]) -> int:
-        total = 0
-        pq = [(-height, index, total := total + height) for index, height in enumerate(height_list)]
-        heapq.heapify(pq)
-
-        first = heapq.heappop(pq)
-        left, right = first, first
+    def trap(self, heights: list[int]) -> int:
+        maxi = int(max(range(len(heights)), key=heights.__getitem__))
+        peak, nxt = 0, 1
+        rocks = 0
         total = 0
 
-        while pq:
-            nxt = heapq.heappop(pq)
-            if nxt[1] < left[1]:
-                total += (1 + nxt[1] - left[1]) * max(left[0], nxt[0]) - left[2] + nxt[2] - left[0]
-                left = nxt
-            if right[1] < nxt[1]:
-                total += (right[1] + 1 - nxt[1]) * max(right[0], nxt[0]) - nxt[2] + right[2] - nxt[0]
-                right = nxt
+        while nxt <= maxi:
+            if heights[nxt] < heights[peak]:
+                rocks += heights[nxt]
+            else:
+                total += (nxt - peak - 1) * heights[peak] - rocks
+                rocks = 0
+                peak = nxt
+            nxt += 1
 
+        peak, nxt = len(heights) - 1, len(heights) - 2
+        rocks = 0
+
+        while maxi <= nxt:
+            if heights[nxt] < heights[peak]:
+                rocks += heights[nxt]
+            else:
+                total += (peak - nxt - 1) * heights[peak] - rocks
+                rocks = 0
+                peak = nxt
+            nxt -= 1
         return total
+
