@@ -9,4 +9,16 @@ class Solution:
     def maxDepth(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
-        return max(1 + self.maxDepth(root.left), 1 + self.maxDepth(root.right))
+
+        maxval = 1
+        stack = [(root, 1)]
+        while stack:
+            nxt, val = stack.pop()
+            maxval = max(maxval, val)
+            if nxt.left:
+                stack.append((nxt.left, val + 1))
+            if nxt.right:
+                stack.append((nxt.right, val + 1))
+
+        return maxval
+                
