@@ -1,9 +1,15 @@
 class Solution:
     def knightDialer(self, n: int) -> int:
-        if n == 1:
-            return 10
-        triple, middle, corner, zero = 3, 2, 2, 2
-        for n in range(2, n):
-            triple, middle, corner, zero = zero + 2 * corner, 2 * corner, middle + triple, 2 * triple
+        if n <= 6:
+            return [0, 10, 20, 46, 104, 240, 544][n]
 
-        return (2 * (triple + middle + 2 * corner) + zero) % 1_000_000_007
+        if n % 2:
+            a = 46
+            b = 240
+        else:
+            a = 104
+            b = 544
+
+        for k in range((n-5)//2):
+            a, b = b, 6 * b - 4 * a
+        return b % 1_000_000_007
