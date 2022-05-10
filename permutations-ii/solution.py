@@ -3,8 +3,11 @@ class Solution:
         if len(nums) <= 1:
             return [nums]
         result = []
+        nums.sort()
+        last = None
         for k, x in enumerate(nums):
+            if x == last:
+                continue
             result.extend([perm + [x] for perm in self.permuteUnique(nums[:k] + nums[k+1:])])
-
-        result = list(set( tuple(x) for x in result ))
-        return [list(x) for x in result]
+            last = x
+        return result
