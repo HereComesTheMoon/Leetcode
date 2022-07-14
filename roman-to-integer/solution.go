@@ -19,17 +19,17 @@ func romanToInt(s string) int {
     }
 
     num := 0
-    k := len(s) - 1
-    for ; k > 0 ; k-- {
+    k := 1
+    for ; k < len(s) ; k++ {
         if val, ok := conv2[s[k-1:k+1]]; ok {
             num += val
-            k--
+            k++
         } else {
-            num += conv[s[k]]
+            num += conv[s[k-1]]
         }
     }
-    if k == 0 {
-        num += conv[s[0]]
+    if k == len(s) {
+        num += conv[s[len(s)-1]]
     }
     return num
 }
