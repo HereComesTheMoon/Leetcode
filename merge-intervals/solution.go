@@ -20,7 +20,7 @@ func merge(v [][]int) [][]int {
     lower := w[0][0]
     upper := w[0][1]
     
-    results := [][]int{}
+    results := make([][]int, 0, len(w))
 
     for _, iv := range w[1:] {
         if iv[0] <= upper {
