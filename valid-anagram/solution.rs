@@ -11,11 +11,8 @@ impl Solution {
         
         for c in t.chars() {
             count[(c as u8 - b'a') as usize] -= 1;
-            if count[(c as u8 - b'a') as usize] < 0 {
-                return false
-            }
         }
 
-        true
+        count.iter().all(|&x| x == 0)
     }
 }
