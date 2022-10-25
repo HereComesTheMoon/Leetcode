@@ -4,7 +4,7 @@ impl Solution {
     pub fn three_sum(mut nums: Vec<i32>) -> Vec<Vec<i32>> {
         nums.sort();
 
-        let mut res: Vec<Vec<i32>> = Vec::new();
+        let mut res: Vec<Vec<i32>> = Vec::with_capacity(nums.len()/3 + 1);
 
         for (i, &x) in nums.iter().enumerate() {
             let mut a = i + 1;
