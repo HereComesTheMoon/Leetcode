@@ -6,11 +6,12 @@ impl Solution {
 
 fn nchoosek(n: i32, k: i32) -> i32 {
     let k = if 2*k > n {
-        n - k
+        (n - k) as u128
     } else {
-        k
+        k as u128
     };
-    let n = n as f64 + 1.;
-    
-    (1..=k).map(|i| i as f64).fold(1.0, |fin, i| fin * (n-i) / i).round() as i32
+
+    let n = n as u128;
+
+    ((n-k+1..=n).product::<u128>() / (1..=k).product::<u128>()) as i32
 }
