@@ -21,16 +21,15 @@ use std::cell::RefCell;
 
 impl Solution {
     pub fn max_depth(root: Option<Rc<RefCell<TreeNode>>>) -> i32 {
-        max_depth_helper(&root)
+        fn helper(root: &Option<Rc<RefCell<TreeNode>>>) -> i32 {
+            if let Some(root) = &root {
+                return 1 + i32::max(
+                    helper(&root.as_ref().borrow().left),
+                    helper(&root.as_ref().borrow().right)
+                    )
+            }
+            0
+        }
+        helper(&root)
     }
-}
-
-pub fn max_depth_helper(root: &Option<Rc<RefCell<TreeNode>>>) -> i32 {
-    if let Some(root) = &root {
-        return 1 + i32::max(
-            max_depth_helper(&root.as_ref().borrow().left),
-            max_depth_helper(&root.as_ref().borrow().right)
-            )
-    }
-    0
 }
