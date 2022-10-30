@@ -3,14 +3,10 @@ class Solution:
         if len(nums) <= 3:
             return max(nums)
         
-        n = len(nums)
-        nums = nums + nums
-        maxi = 0
-        for i in range(n):
-            a, b = nums[i], nums[i]
-            for k in range(2, n - 1):
-                a, b = b, max(b, a + nums[i + k])
-            maxi = max(maxi, b)
+        a, b = nums[0], max(nums[0], nums[1])
+        c, d = nums[1], max(nums[1], nums[2])
+        for k in range(2, len(nums) - 1):
+            a, b = b, max(b, a + nums[k])
+            c, d = d, max(d, c + nums[k + 1])
         
-        return maxi
-            
+        return max(b, d)
