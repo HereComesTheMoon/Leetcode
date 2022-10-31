@@ -3,9 +3,12 @@ class Solution:
         vals = { x for x in nums }
         result = 0
         
-        for x in filter(lambda x: x - 1 not in vals, nums):
+        # for x in filter(lambda x: x - 1 not in vals, nums):
+        for x in nums:
+            if x - 1 in vals:
+                continue
+                
             current = 0
-
             while x in vals:
                 current += 1
                 x += 1
