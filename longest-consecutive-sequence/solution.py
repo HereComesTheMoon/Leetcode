@@ -1,6 +1,6 @@
 class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
-        vals = { x for x in nums }
+        vals = set(nums)
         result = 0
         
         # for x in filter(lambda x: x - 1 not in vals, nums):
