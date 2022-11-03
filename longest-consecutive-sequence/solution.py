@@ -2,19 +2,20 @@ class Solution:
     def longestConsecutive(self, nums: List[int]) -> int:
         vals = set(nums)
         result = 0
-        
-        # for x in filter(lambda x: x - 1 not in vals, nums):
-        for x in vals:
-            if x - 1 in vals:
-                continue
-                
+        while vals:
+            x = vals.pop()
+            vals.add(x)
+
+            while x-1 in vals:
+                x = x - 1
+            
             current = 0
             while x in vals:
+                vals.discard(x)
                 current += 1
-                x += 1
-
+                x = x + 1
+                
             result = max(result, current)
-            
         return result
             
             
