@@ -3,12 +3,10 @@ class Solution:
         for row in board:
             l = list(filt(row))
             if len(l) != len(set(l)):
-                print(l)
                 return False
         for coli in range(len(board)):
             l = list(filt(board[i][coli] for i in range(9)))
             if len(l) != len(set(l)):
-                print(l)
                 return False
         for boxi in range(9):
             i = (boxi // 3) * 3
@@ -25,8 +23,6 @@ class Solution:
                 board[i+2][j+2],
             )))
             if len(l) != len(set(l)):
-                print("Here")
-                print(l)
                 return False
         return True
             
