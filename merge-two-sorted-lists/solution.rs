@@ -14,40 +14,38 @@
 //     }
 //   }
 // }
-
-pub struct Iter<'a> {
-    next: Option<&'a ListNode>,
-}
-
-impl ListNode {
-    pub fn iter<'a>(&'a self) -> Iter<'a> {
-        Iter { next: Some(self) }
-    }
-}
-
-impl<'a> Iterator for Iter<'a> {
-    type Item = &'a i32;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        self.next.map(|node| {
-            self.next = node.next.as_deref();
-            &node.val
-        })
-    }
-}
-
 impl Solution {
-    pub fn merge_two_lists(list1: Option<Box<ListNode>>, list2: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-        if list1.is_none() { return list2 }
-        if list2.is_none() { return list1 }
-        let mut v: Vec<i32> = list1.unwrap().iter().chain(list2.unwrap().iter()).copied().collect();
-        v.sort_unstable();
+    pub fn merge_two_lists(mut a: Option<Box<ListNode>>, mut b: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+            if a.is_none() {
+        return b;
+    }
+    if b.is_none() {
+        return a;
+    }
+    if a.as_ref().unwrap().val > b.as_ref().unwrap().val {
+        std::mem::swap(&mut a, &mut b);
+    }
 
-        let mut last = None;
-        for &x in v.iter().rev() {
-            let next = Some(Box::new(ListNode{ val: x, next: last.take()}));
-            last = next;
+    let mut head = a;
+    let mut a = head.as_mut();
+
+    while a.is_some() {
+        if b.is_none() {
+            break
         }
-        last
+        if a.as_ref().unwrap().next.is_none() {
+            a.as_mut().unwrap().next = b;
+            break
+        }
+        if a.as_ref().unwrap().next.as_ref().unwrap().val < b.as_ref().unwrap().val {
+            a = a.unwrap().next.as_mut();
+        } else {
+            std::mem::swap(&mut a.as_mut().unwrap().next, &mut b);
+            a = a.unwrap().next.as_mut();
+        }
+    }
+    
+    head
+
     }
 }
