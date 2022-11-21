@@ -5,7 +5,7 @@ impl Solution {
         let coins = coins;
         let mut mins: Vec<usize> = vec![i32::MAX as usize; 1 + amount as usize];
         mins[0] = 0;
-        for x in 0..mins.len() {
+        for x in 1..mins.len() {
             for &y in coins.iter() {
                 if x < y {
                     break;
