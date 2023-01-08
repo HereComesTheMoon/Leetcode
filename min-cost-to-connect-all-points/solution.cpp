@@ -51,7 +51,6 @@ public:
 class Solution {
 public:
     int minCostConnectPoints(vector<vector<int>>& points) {
-
         auto cmp = [](Edge l, Edge r) { 
             return l.dist > r.dist; // > for min priority_queue
         };
@@ -66,17 +65,19 @@ public:
             for (size_t j = i + 1; j < points.size(); ++j) {
                 auto qx = points[j][0];
                 auto qy = points[j][1];
-                pq.push(Edge {px, py, qx, qy, l1_dist(px, py, qx, qy)}); 
+                pq.push(Edge { px, py, qx, qy, l1_dist(px, py, qx, qy) }); 
             }
         }
 
         int min_cost = 0;
-        while (!pq.empty()) {
+        uint connected = 1;
+        while (connected < points.size()) {
             Edge e = pq.top();
             pq.pop();
             if (ds.find_rep(e.px, e.py) == ds.find_rep(e.qx, e.qy)) continue;
             min_cost += e.dist;
             ds.merge(e.px, e.py, e.qx, e.qy);
+            ++connected;
         }
 
         return min_cost;
