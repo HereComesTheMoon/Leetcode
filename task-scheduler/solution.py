@@ -1,21 +1,17 @@
-import heapq as pq
+from collections import Counter
 
 class Solution:
     def leastInterval(self, tasks: List[str], n: int) -> int:
-        d = {}
-        for x in tasks:
-            d[x] = d.get(x, 0) + 1
-        heap = [(0, -count) for count in d.values()]
-        pq.heapify(heap)
-        time = -1
-        while heap:
-            time += 1
-            if time < heap[0][0]:
-                continue
-            while heap[0][0] < time:
-                pq.heapreplace(heap, (time, heap[0][1]))
-            if -heap[0][1] == 1:
-                pq.heappop(heap)
-                continue
-            pq.heapreplace(heap, (time + n + 1, heap[0][1] + 1))
-        return time + 1
+        d = Counter(tasks)
+        time = 0
+        while d:
+            left = len(d)
+            for val, count in d.most_common(n + 1):
+                d[val] -= 1
+                if d[val] == 0:
+                    del d[val]
+            if d:
+                time += n + 1
+            else:
+                time += left
+        return time
