@@ -7,8 +7,8 @@ class Solution:
         for edge in trust:
             d_in[edge[1]] += 1
             d_out.add(edge[0])
-        for k, v in d_in.items():
-            if v < n - 1:
+        for k in range(1, n + 1):
+            if d_in[k] < n - 1:
                 continue
             if k in d_out:
                 continue
