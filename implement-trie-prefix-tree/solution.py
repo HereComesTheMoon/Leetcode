@@ -1,48 +1,42 @@
 class Node:
-    def __init__(self, endpoint: bool):
-        self.d: dict[str, "Node"] = {}
-        self.endpoint = endpoint
+    def __init__(self):
+        self.d = {}
+        self.end = False
 
-    def __getitem__(self, key: str):
-        assert len(key) == 1
-        return self.d.get(key, None)
-
-    def insert(self, c: str) -> "Node":
-        assert c not in self.d
-        assert len(c) == 1
-        self.d[c] = Node(False)
-        return self.d[c]
-
-        
 class Trie:
     def __init__(self):
-        self.head = Node(False)
+        self.node = Node()
 
-    def insert(self, word: str) -> None:
-        par = self.head
+    def search(self, word) -> bool:
+        n = self.node
+        # warning, word might not be a string. It could be an iterator of arbitrary hashable keys. This is a usecase
         for c in word:
-            node = par[c]
-            if node is None:
-                par = par.insert(c)
+            if n is None:
+                return False
+            n = n.d.get(c, None)
+
+        if n is None:
+            return False
+        return n.end
+
+    def startsWith(self, word) -> bool:
+        n = self.node
+        if not word:
+            return bool(n.d)
+
+        for c in word:
+            if n is None:
+                return False
+            n = n.d.get(c, None)
+
+        return n is not None
+
+    def insert(self, word):
+        n = self.node
+        for c in word:
+            if c in n.d:
+                n = n.d[c]
             else:
-                par = node
-        par.endpoint = True
-
-    def search(self, word: str) -> bool:
-        par = self.head
-        for c in word:
-            node = par[c]
-            if node is None:
-                return False
-            par = node
-        return par.endpoint
-
-    def startsWith(self, prefix: str) -> bool:
-        par = self.head
-        for c in prefix:
-            node = par[c]
-            if node is None:
-                return False
-            par = node
-        return True
-        
+                n.d[c] = Node()
+                n = n.d[c]
+        n.end = True
