@@ -7,7 +7,6 @@ class Solution:
             counter[s[i:i+10]] += 1
         
         res = []
-        print(counter)
         for k, v in counter.items():
             if v <= 1:
                 continue
