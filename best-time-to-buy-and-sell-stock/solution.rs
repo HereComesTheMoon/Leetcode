@@ -1,15 +1,6 @@
 impl Solution {
     pub fn max_profit(prices: Vec<i32>) -> i32 {
-        if prices.len() <= 1 { return 0 }
-
-        let mut buy = prices[0];
-        let mut profit = 0;
-
-        for sell in prices {
-            profit = profit.max(sell - buy);
-            buy = buy.min(sell);
-        }
-
-        profit
+        prices.into_iter().fold((0, i32::MAX), 
+        |acc, x| (i32::max(acc.0, x - acc.1), i32::min(acc.1, x))).0
     }
 }
