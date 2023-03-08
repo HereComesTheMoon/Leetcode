@@ -1,14 +1,16 @@
-from math import ceil
-
 class Solution:
     def minEatingSpeed(self, piles: List[int], h: int) -> int:
-        assert len(piles) <= h
-        can_finish = lambda eating_speed: sum(ceil(pile_size / eating_speed) for pile_size in piles) <= h
-        i = 1
-        j = max(piles)
-        while i < j:
-            if can_finish((j + i) // 2):
-                j = (j + i) // 2
+        a = 1
+        b = max(piles)
+
+        def check(speed: int) -> bool:
+            time = sum( 1 + (pile - 1) // speed for pile in piles )
+            return time <= h
+
+        while a < b:
+            mid = (a + b) // 2
+            if check(mid):
+                b = mid
             else:
-                i = (j + i) // 2 + 1
-        return i
+                a = mid + 1
+        return a
