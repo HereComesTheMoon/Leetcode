@@ -1,44 +1,41 @@
-class UnionFind:
-    def __init__(self, vals: List[str]):
-        self.d = {
-            val: val for val in vals
-        }
-        self.weight = {
-            val: 1 for val in vals
-        }
+# Testin other solution to see if it is faster than mine 
+class DSU:
+    def __init__(self, l):
+        self.memo = [i for i in range(l)]
+    
+    def find(self, x):
+        if self.memo[x] != x:
+            self.memo[x] = self.find(self.memo[x])
+        return self.memo[x]
 
-    def get(self, w: str) -> str:
-        par = w
-        w = self.d[w]
-        while par != w:
-            new_par = w
-            w = self.d[w]
-            self.d[par] = w
-            par = new_par
-        return w
-        
+    def union(self, x, y):
+        x_r = self.find(x)
+        y_r = self.find(y)
 
-    def merge(self, a: str, b: str) -> str:
-        a = self.get(a)
-        b = self.get(b)
-        if self.weight[a] < self.weight[b]:
-            self.d[a] = b
-            self.weight[a] += self.weight[b]
-            return b
-        else:
-            self.d[b] = a
-            self.weight[b] += self.weight[a]
-            return a
-        
+        if x_r != y_r:
+            self.memo[x_r] = y_r
+
+
 
 
 class Solution:
     def numSimilarGroups(self, strs: List[str]) -> int:
-        uf = UnionFind(strs)
-        for k, a in enumerate(strs):
-            for b in strs[k:]:
-                if uf.get(a) == uf.get(b):
-                    continue
-                if sum(1 if ca != cb else 0 for ca, cb in zip(a, b)) == 2:
-                    uf.merge(a, b)
-        return len({uf.get(w) for w in strs})
+        def helper(s1, s2):
+            if s1 == s2:
+                return True
+            ct = 0
+            for i, j in zip(s1, s2):
+                if i != j:
+                    if ct == 2:
+                        return False
+                    ct += 1
+            
+            return True
+        
+        dsu = DSU(len(strs))
+        for i in range(len(strs)):
+            for j in range(i+1, len(strs)):
+                if helper(strs[i], strs[j]):
+                    dsu.union(i, j)
+        
+        return len(set([dsu.find(i) for i in range(len(strs))]))
