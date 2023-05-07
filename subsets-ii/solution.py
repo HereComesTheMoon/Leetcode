@@ -1,21 +1,22 @@
+# from collections import frozenset
+
 class Solution:
     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        if not nums:
+            return [[]]
         nums.sort()
-        vals = []
-        last = nums[0] - 1
-        for x in nums:
-            if x == last:
-                vals[-1].append(x)
+        chunks = [ [nums[0]] ]
+        for x in nums[1:]:
+            if x == chunks[-1][0]:
+                chunks[-1].append(x)
             else:
-                vals.append([x])
-            last = x
-
+                chunks.append([x])
+        
         res = [[]]
-        for row in vals:
-            new_sets = deepcopy(res)
-            for x in row:
-                for subset in new_sets:
-                    subset.append(x)
-                res.extend(deepcopy(new_sets))
-                                       
+        for chunk in chunks:
+            now = [ subset + [ chunk[0] ] for subset in res ]
+            res.extend(now)
+            for k in range(1, len(chunk)):
+                now = [ subset + [ chunk[0] ] for subset in now ]
+                res.extend(now)
         return res
