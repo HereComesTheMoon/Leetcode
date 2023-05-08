@@ -5,3 +5,4 @@ class Solution:
             if x in d:
                 return [d[x], k]
             d[target - x] = k
+        
