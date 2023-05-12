@@ -9,5 +9,4 @@ class Solution:
                 res[k] = max(res[k+1], questions[k][0] + res[k + bp])
             else:
                 res[k] = max(res[k+1], questions[k][0])
-        print(res)
         return res[0]
