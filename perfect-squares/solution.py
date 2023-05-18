@@ -1,17 +1,25 @@
-from math import isqrt
+from functools import cache
 
 class Solution:
     def numSquares(self, n: int) -> int:
-        if isqrt(n)**2 == n:
+        squares = [k**2 for k in range(1, isqrt(n) + 1)]
+        squares.reverse()
+
+        squares_check = set(squares)
+
+        if n in squares_check:
             return 1
-        dp = [k for k in range(n + 1)]
-        for k in range(isqrt(n) + 1):
-            dp[k**2] = 1
-        for k in range(n + 1):
-            j = k + 1
-            step = 3
-            while j <= n:
-                dp[j] = min(dp[j], dp[k] + 1)
-                j += step
-                step += 2
-        return dp[-1]
+        @cache
+        def rec(n: int) -> int:
+            if n <= 1:
+                return 1 if n == 1 else 0
+            if n in squares_check:
+                return 1
+            val = float('inf')
+            for x in squares:
+                if n < x:
+                    continue
+                val = min(val, rec(n-x))
+            return val + 1
+        
+        return rec(n)
