@@ -2,7 +2,7 @@ from functools import cache
 
 class Solution:
     def findTargetSumWays(self, nums: List[int], target: int) -> int:
-        nums.sort(reverse=True)
+        nums.sort()
 
         @cache
         def rec(i: int, val: int) -> int:
