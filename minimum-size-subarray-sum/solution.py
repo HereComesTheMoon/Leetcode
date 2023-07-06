@@ -1,34 +1,21 @@
 class Solution:
-    def minSubArrayLen(self, target: int, nums: list[int]) -> int:
+    def minSubArrayLen(self, target: int, nums: List[int]) -> int:
         i = 0
-        j = 1
-        total = nums[0]
-
-        # Find and Refine: Find a solution, then refine to find the best one
-        while total < target and j < len(nums):
-            total += nums[j]
-            j += 1
-
-        if total < target:
-            return 0
-        # Else: A solution exists.
-
-        # Refine first solution
-        while total >= target:
-            total -= nums[i]
-            i += 1
-
-        length = j - i + 1
-
-        # Move a shrinking window across the array, searching for solutions. When found, shrink window further
+        j = 0
+        val = 0
+        res = len(nums) + 1
         while j < len(nums):
-            total += nums[j]
-            total -= nums[i]
-            j += 1
-            i += 1
-            while total >= target:
-                length -= 1
-                total -= nums[i]
+            if val < target:
+                val += nums[j]
+                j += 1
+            else:
+                res = min(res, j - i)
+                val -= nums[i]
                 i += 1
-
-        return length
+        if target <= val:
+            while target <= val - nums[i]:
+                val -= nums[i]
+                i += 1
+            res = min(res, j - i)
+        
+        return res if res <= len(nums) else 0
