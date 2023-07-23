@@ -13,9 +13,6 @@
 
 |#
 
-(define (build-tree-nodeeeee [left #f] [right #f])
-  (tree-node 0 left right))
-
 (define/contract (all-possible-fbt n)
   (-> exact-integer? (listof (or/c tree-node? #f)))
   (if (= n 1)
@@ -23,8 +20,9 @@
     (flatten
       (for/list ([k (in-range 1 (- n 1))])
         (map
-          (lambda (node) (apply build-tree-nodeeeee node))
+          (lambda (vals) (apply tree-node vals))
           (cartesian-product
+            (list 0)
             (all-possible-fbt k)
             (all-possible-fbt (- n (+ k 1)))
           )
