@@ -1,12 +1,17 @@
 class Solution:
     def canPartition(self, nums: List[int]) -> bool:
-        total = sum(nums)
-        if total % 2:
+        n = sum(nums)
+        if n % 2 == 1:
             return False
-        total = total // 2
-        sums = { 0 }
-        for x in nums:
-            if total in sums:
-                return True
-            sums |= { x + y for y in sums }
-        return total in sums
+        n = n // 2
+
+        @functools.cache
+        def rec(val: int, pos: int) -> int:
+            if n <= val:
+                return val == n
+            if pos == len(nums):
+                return False
+            return rec(val, pos + 1) or rec(val + nums[pos], pos + 1)
+        
+        return rec(0, 0)
+
